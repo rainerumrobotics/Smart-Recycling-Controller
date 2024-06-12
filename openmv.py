@@ -2,6 +2,7 @@
 
 import pyopenmv
 import pygame
+import serial
 
 DEFAULT_SCRIPT = """
 # Hello World Example
@@ -20,8 +21,10 @@ sensor.skip_frames(time = 2000)     # Wait for settings take effect.
 clock = time.clock()                # Create a clock object to track the FPS.
 
 while(True):
+    clock.tick()
     img = sensor.snapshot()         # Take a picture and return the image.
     sensor.flush()
+    print("%.2f" % clock.fps(), "fps")
 """
 
 IMAGE_SCALE = 4
@@ -35,7 +38,7 @@ def serial_init(serial_port_camera: str, script: str = DEFAULT_SCRIPT):
         pyopenmv.stop_script()
         pyopenmv.enable_fb(True)
         pyopenmv.exec_script(script)
-    except:
+    except serial.serialutil.PortNotOpenError:
         pass
 
 _fb = None
@@ -45,9 +48,10 @@ def get_image(image_scale: int = IMAGE_SCALE, w: int = 320, h: int = 240) -> tup
     Retrive last scaled image captured from camera as a tuple: (width, height, image)
     """
     global _fb
+    fb = None
     try:
         fb = pyopenmv.fb_dump() # is not always a complete frame
-    except:
+    except serial.serialutil.PortNotOpenError:
         pass
     if fb is None and _fb is None:
         #return 0, 0, pygame.Surface((0, 0)) # equivalent to full screen
@@ -61,9 +65,18 @@ def get_image(image_scale: int = IMAGE_SCALE, w: int = 320, h: int = 240) -> tup
     image = pygame.transform.scale(image, (width, height))
     return width, height, image
 
+def get_text() -> str:
+    try:
+        tx_len = pyopenmv.tx_buf_len()
+        if tx_len:
+            return pyopenmv.tx_buf(tx_len).decode()
+    except serial.serialutil.PortNotOpenError:
+        pass
+    return ""
+
 def serial_close():
     try:
         pyopenmv.stop_script()
         pyopenmv.disconnect()
-    except:
+    except serial.serialutil.PortNotOpenError:
         pass
