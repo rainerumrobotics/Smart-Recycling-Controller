@@ -33,7 +33,8 @@ def serial_init(serial_port_camera: str, script: str = DEFAULT_SCRIPT):
     print("\nOpenMV firmware camera & LED reset ...")
     try:
         pyopenmv.disconnect()
-        pyopenmv.init(serial_port_camera, baudrate=921600, timeout=0.050)
+        # Enters USB debug mode either with 921600 or 12000000 baud 
+        pyopenmv.init(serial_port_camera, baudrate=12000000, timeout=0.050)
         pyopenmv.set_timeout(1*2) # SD Cards can cause big hicups.
         pyopenmv.stop_script()
         pyopenmv.enable_fb(True)
