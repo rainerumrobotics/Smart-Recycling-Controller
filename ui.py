@@ -22,3 +22,22 @@ def draw_screen(width: int, height: int, image: pygame.Surface) -> pygame.Surfac
 def print_fps(screen: pygame.Surface, clock: pygame.time.Clock):
     font = pygame.font.SysFont("monospace", 15)
     screen.blit(font.render("FPS %.2f"%(clock.get_fps()), 1, (255, 0, 0)), (0, 0))
+
+_last_object = ""
+def print_object(screen: pygame.Surface, receivedText: str):
+    global _last_object
+    # objects from labels.txt
+    objects = (
+        "carta.class",
+        "empty.class",
+        "metallo.class",
+        "plastica.class",
+        "vetro.class"
+    )
+    font = pygame.font.SysFont("monospace", 15)
+    for object in objects:
+        if object in receivedText:
+            text = object.replace(".class", "")
+            text = text.upper()
+            _last_object = text
+    screen.blit(font.render(_last_object, 1, (255, 0, 0)), (95, 0))

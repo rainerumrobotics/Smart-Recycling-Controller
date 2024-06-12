@@ -66,7 +66,7 @@ while(True):
             print('x %d\\ty %d' % (center_x, center_y))
             img.draw_circle((center_x, center_y, 12), color=colors[i], thickness=2)
 
-    print(clock.fps(), "fps", end="\\n\\n")
+    print("%.2f" % clock.fps(), "fps", end="\\n\\n")
 
 """
 
