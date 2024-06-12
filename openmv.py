@@ -27,7 +27,7 @@ while(True):
     print("%.2f" % clock.fps(), "fps")
 """
 
-IMAGE_SCALE = 4
+IMAGE_SCALE = 3
 
 def serial_init(serial_port_camera: str, script: str = DEFAULT_SCRIPT):
     print("\nOpenMV firmware camera & LED reset ...")

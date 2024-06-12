@@ -1,6 +1,6 @@
 DEVICES = {
-    "actuators": "2341:0042", # Arduino Mega with Marlin firmware (Stepper + Servo)
-    #"actuators": "1A86:7523", # Arduino Mega clone with Marlin firmware (Stepper + Servo)
+    #"actuators": "2341:0042", # Arduino Mega with Marlin firmware (Stepper + Servo)
+    "actuators": "1A86:7523", # Arduino Mega clone with Marlin firmware (Stepper + Servo)
     "camera": "2341:045F" # Nicla Vision with OpenMV image recognition (LED + Camera)
 }
 

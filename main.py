@@ -10,3 +10,7 @@ if __name__ == "__main__":
         marlin.move_conveyor(actuators, 0)
         marlin.move_servo(actuators, 0)
         marlin.idle_servo(actuators)
+        # TODO: attendi e poi sposta se necessario
+        marlin.move_conveyor(actuators, 180)
+        marlin.move_servo(actuators, 180)
+        marlin.idle_servo(actuators)
