@@ -1,8 +1,33 @@
 import serial_port
+import serial
 import marlin
 import openmv
 import pygame
 import ui
+
+_state = 0
+def state_machine(actuators: serial.Serial ,object: str):
+    global _state
+    # objects from labels.txt
+    #    "carta.class",
+    #    "empty.class",
+    #    "metallo.class",
+    #    "plastica.class",
+    #    "vetro.class"
+    # print("State:", _state)
+
+    if object == "":
+        marlin.move_conveyor(actuators, 0)
+    elif object == "empty":
+        marlin.move_conveyor(actuators, 0)
+    elif object == "carta":
+        marlin.move_conveyor(actuators, 300)
+    elif object == "metallo":
+        marlin.move_conveyor(actuators, 500)
+    elif object == "plastica":
+        marlin.move_conveyor(actuators, 800)
+    elif object == "vetro":
+        marlin.move_conveyor(actuators, 150)
 
 if __name__ == "__main__":
     serial_ports = serial_port.find_devices()
@@ -22,11 +47,11 @@ if __name__ == "__main__":
             #print(usb_debug_text, end = "")
             screen = ui.draw_screen(width, height, image)
             ui.print_fps(screen, clock)
-            ui.print_object(screen, usb_debug_text)
+            object = ui.print_object(screen, usb_debug_text)
             # update display
             pygame.display.flip()
             # TODO: do some processing
-            #
+            state_machine(actuators, object)
             is_running = ui.event_exit()
         pygame.quit()
         openmv.serial_close()
