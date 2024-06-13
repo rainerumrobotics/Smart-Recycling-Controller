@@ -6,7 +6,7 @@ import pygame
 import ui
 
 _state = 0
-def state_machine(actuators: serial.Serial ,object: str):
+def state_machine(actuators: serial.Serial, object: str):
     global _state
     # objects from labels.txt
     #    "carta.class",
@@ -15,10 +15,7 @@ def state_machine(actuators: serial.Serial ,object: str):
     #    "plastica.class",
     #    "vetro.class"
     # print("State:", _state)
-
-    if object == "":
-        marlin.move_conveyor(actuators, 0)
-    elif object == "empty":
+    if object == "empty":
         marlin.move_conveyor(actuators, 0)
     elif object == "carta":
         marlin.move_conveyor(actuators, 300)
