@@ -9,6 +9,8 @@ def serial_init(serial_port_actuators: str) -> Serial:
         print(serial.read_all().decode("utf-8"), end = "")
     except:
         pass
+    # put in relative positioning
+    serial.write(bytes("G91\n", "utf-8"))
     return serial
 
 def _transfer_command(serial_actuators: Serial, command: str):
@@ -44,14 +46,14 @@ def command_is_finished(serial_actuators: Serial) -> bool:
     old_timeout = serial_actuators.timeout
     if _command_finished_is_sent == False:
         serial_actuators.write(bytes(command, "utf-8"))
-        print("\n" + command, end = "")
+        #print("\n" + command, end = "")
         _command_finished_is_sent = True
     serial_actuators.timeout = 0.1
     text = serial_actuators.read_until().decode("utf-8")
     #print(text)
     result = "ok" in text
     if result == True:
-        print(text, end = "")
+        #print(text, end = "")
         _command_finished_is_sent = False
     serial_actuators.timeout = old_timeout
     return result

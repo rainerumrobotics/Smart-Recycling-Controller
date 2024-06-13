@@ -5,9 +5,9 @@ import openmv
 import pygame
 import ui
 
-_state = 0
+_state_is_busy = False
 def state_machine(actuators: serial.Serial, object: str):
-    global _state
+    global _state_is_busy
     # objects from labels.txt
     #    "carta.class",
     #    "empty.class",
@@ -15,8 +15,14 @@ def state_machine(actuators: serial.Serial, object: str):
     #    "plastica.class",
     #    "vetro.class"
     # print("State:", _state)
+    if _state_is_busy == True:
+        # wait until last command has finished
+        if marlin.command_is_finished(actuators) == True:
+            _state_is_busy = False
+        return
     if object == "empty":
-        marlin.move_conveyor(actuators, 0)
+        #marlin.move_conveyor(actuators, 0)
+        pass
     elif object == "carta":
         marlin.move_conveyor(actuators, 300)
     elif object == "metallo":
@@ -25,6 +31,7 @@ def state_machine(actuators: serial.Serial, object: str):
         marlin.move_conveyor(actuators, 800)
     elif object == "vetro":
         marlin.move_conveyor(actuators, 150)
+    _state_is_busy = True
 
 if __name__ == "__main__":
     serial_ports = serial_port.find_devices()
